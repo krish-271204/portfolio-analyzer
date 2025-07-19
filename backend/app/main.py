@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from .auth import router as auth_router
 from .portfolio import router as portfolio_router
 from .analysis import router as analysis_router
@@ -10,9 +11,28 @@ from .groq_utils import ask_groq
 import httpx
 from fastapi import Depends
 from .auth import get_current_user
+from fastapi import HTTPException
+import os
+from sqlalchemy import inspect
+from .database import Base, engine
+import app.models
 import subprocess
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",  # Local development
+        "http://localhost:5173",  # Vite dev server
+        "https://portfolio-analyzer-coral.vercel.app",  # Your Vercel domain
+        "https://*.vercel.app",  # Any Vercel subdomain
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth_router)
 app.include_router(portfolio_router)
