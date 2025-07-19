@@ -27,7 +27,7 @@ def read_root():
 @app.get("/init-db")  # Optional: change to POST for safety
 def init_db():
     try:
-        result = subprocess.run(["python", "backend/create_tables.py"], check=True, capture_output=True, text=True)
+        result = subprocess.run(["python", "create_tables.py"], check=True, capture_output=True, text=True)
         return {
             "status": "✅ Tables created successfully!",
             "output": result.stdout
