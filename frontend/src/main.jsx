@@ -4,6 +4,14 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import axios from 'axios';
 
+// Set base URL for API calls
+// In development: uses Vite proxy (localhost:8000)
+// In production: uses environment variable or defaults to localhost
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'http://localhost:8000');
+if (API_BASE_URL) {
+  axios.defaults.baseURL = API_BASE_URL;
+}
+
 // Global axios interceptor for 401 Unauthorized
 axios.interceptors.response.use(
   response => response,
