@@ -10,6 +10,7 @@ from .groq_utils import ask_groq
 import httpx
 from fastapi import Depends
 from .auth import get_current_user
+import subprocess
 
 app = FastAPI()
 
@@ -22,6 +23,21 @@ app.include_router(broker_import_router)
 @app.get("/")
 def read_root():
     return {"message": "Stock Portfolio Analyzer API"}
+    
+@app.get("/init-db")  # Optional: change to POST for safety
+def init_db():
+    try:
+        result = subprocess.run(["python", "backend/create_tables.py"], check=True, capture_output=True, text=True)
+        return {
+            "status": "✅ Tables created successfully!",
+            "output": result.stdout
+        }
+    except subprocess.CalledProcessError as e:
+        return {
+            "status": "❌ Error running create_tables.py",
+            "error": e.stderr
+        }
+
 
 async def generate_portfolio_data(user_token: str, base_url: str = "http://localhost:8000"):
     headers = {"Authorization": f"Bearer {user_token}"}
