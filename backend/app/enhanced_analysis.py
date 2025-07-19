@@ -11,7 +11,6 @@ import os
 import psycopg2
 import pandas as pd
 import yfinance as yf
-import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from collections import defaultdict
 
