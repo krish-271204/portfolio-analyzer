@@ -26,7 +26,6 @@ def get_db():
 # Pydantic Schemas
 class UserCreate(BaseModel):
     email: EmailStr
-    phone: str | None = None
     password: str
 
 class UserLogin(BaseModel):
