@@ -35,6 +35,15 @@ const AnalysisPage = () => {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/');
+      return;
+    }
+    fetchAllAnalysisData();
+  }, []);
+
  useEffect(() => {
     const fetchAISummary = async () => {
       setAiLoading(true);
