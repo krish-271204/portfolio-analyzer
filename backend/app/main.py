@@ -18,19 +18,11 @@ from .database import Base, engine
 import app.models
 import subprocess
 
-
-from fastapi.middleware.cors import CORSMiddleware
-
 app = FastAPI()
-
-# Allow requests from your frontend domain
-origins = [
-    "https://portfolio-analyzer-coral.vercel.app",  # your frontend Vercel domain
-]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # or ["*"] for all
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
