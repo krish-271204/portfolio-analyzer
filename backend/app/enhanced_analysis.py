@@ -83,8 +83,6 @@ def get_portfolio_composition(db: Session = Depends(get_db), current_user=Depend
             sector = info.get("sector", "Others")
             # Fetch market cap dynamically
             market_cap = info.get("marketCap", None)
-            print(f"DEBUG: {symbol} - Raw market cap from yfinance: {market_cap}")
-            print(f"DEBUG: {symbol} - Full info keys: {list(info.keys())}")
             # Try alternative market cap fields
             if market_cap is None or market_cap > 1e12:  # If > 1 trillion USD, likely wrong
                 market_cap = info.get("market_cap", None)
@@ -105,10 +103,8 @@ def get_portfolio_composition(db: Session = Depends(get_db), current_user=Depend
                 # yfinance returns market cap in INR, convert to crores
                 market_cap_inr_crores = market_cap / 1e7  # Convert INR to crores
                 market_cap_category = get_market_cap_category(market_cap_inr_crores)
-                print(f"DEBUG: {symbol} - Market Cap INR: {market_cap}, INR Crores: {market_cap_inr_crores:.0f}, Category: {market_cap_category}")
             else:
                 market_cap_category = "Unknown"
-                print(f"DEBUG: {symbol} - Market Cap: Invalid or not available (value: {market_cap})")
             market_cap_allocation[market_cap_category] += current_value
             holdings_with_details.append({
                 "symbol": symbol,
