@@ -41,8 +41,7 @@ const AnalysisPage = () => {
       setAiError("");
       try {
         const token = localStorage.getItem("token");
-        const API_BASE = import.meta.env.VITE_API_URL || "";
-        const response = await axios.post(`${API_BASE}/api/ai/summary`, {}, { 
+        const res = await fetch("/api/ai/summary", {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
