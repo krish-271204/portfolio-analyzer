@@ -42,6 +42,7 @@ const AnalysisPage = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch("/api/ai/summary", {
+          method: "POST",
           headers: {
             "Authorization": `Bearer ${token}`,
           },
