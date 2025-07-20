@@ -6,17 +6,6 @@ import MarketCapPieChart from '../components/MarketCapPieChart';
 import ReactMarkdown from "react-markdown";
 import { FaBrain, FaLightbulb, FaArrowRight } from "react-icons/fa";
 
-
-function normalizeTo1000(data) {
-  if (!data || data.length === 0) return [];
-  const firstValue = data[0].value ?? data[0].portfolio ?? data[0].nifty;
-  if (firstValue === 0) return data.map(d => ({ ...d, value: 0 }));
-  return data.map(d => ({
-    ...d,
-    value: (d.value ?? d.portfolio ?? d.nifty) / firstValue * 1000
-  }));
-}
-
 // Helper function to split AI summary into sections
 function splitAISummary(summary) {
   const sections = { insights: "", suggestions: "" };
@@ -52,7 +41,8 @@ const AnalysisPage = () => {
       setAiError("");
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.post("/api/ai/summary", {}, {
+        const API_BASE = import.meta.env.VITE_API_URL || "";
+        const response = await axios.post(`${API_BASE}/api/ai/summary`, {}, { 
           headers: {
             "Authorization": `Bearer ${token}`,
           },
