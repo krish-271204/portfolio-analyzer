@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request , APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from .auth import router as auth_router
 from .portfolio import router as portfolio_router
@@ -35,10 +35,10 @@ app.include_router(enhanced_analysis_router)
 app.include_router(broker_import_router)
 
 #to prevent cold starts on Render 
-@app.get("/ping")
+@app.api_route("/ping", methods=["GET", "HEAD"])
 def ping():
     return {"status": "ok"}
-
+    
 @app.get("/")
 def read_root():
     return {"message": "Stock Portfolio Analyzer API"}
