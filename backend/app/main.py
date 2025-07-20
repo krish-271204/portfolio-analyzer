@@ -20,15 +20,18 @@ import subprocess
 
 app = FastAPI()
 
-# Add CORS middleware
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+# Allow requests from your frontend domain
+origins = [
+    "https://portfolio-analyzer-coral.vercel.app",  # your frontend Vercel domain
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",  # Local development
-        "http://localhost:5173",  # Vite dev server
-        "https://portfolio-analyzer-coral.vercel.app",  # Your Vercel domain
-        "https://*.vercel.app",  # Any Vercel subdomain
-    ],
+    allow_origins=origins,  # or ["*"] for all
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
