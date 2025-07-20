@@ -34,6 +34,11 @@ app.include_router(analysis_router)
 app.include_router(enhanced_analysis_router)
 app.include_router(broker_import_router)
 
+#to prevent cold starts on Render 
+@app.get("/ping")
+def ping():
+    return {"status": "ok"}
+
 @app.get("/")
 def read_root():
     return {"message": "Stock Portfolio Analyzer API"}
