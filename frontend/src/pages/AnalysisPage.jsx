@@ -41,8 +41,7 @@ const AnalysisPage = () => {
       setAiError("");
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("/api/ai/summary", {
-          method: "POST",
+        const response = await axios.post("/api/ai/summary", {}, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
