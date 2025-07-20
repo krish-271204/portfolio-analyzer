@@ -6,6 +6,11 @@ import MarketCapPieChart from '../components/MarketCapPieChart';
 import ReactMarkdown from "react-markdown";
 import { FaBrain, FaLightbulb, FaArrowRight } from "react-icons/fa";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'http://localhost:8000');
+if (API_BASE_URL) {
+  axios.defaults.baseURL = API_BASE_URL;
+}
+
 function normalizeTo1000(data) {
   if (!data || data.length === 0) return [];
   const firstValue = data[0].value ?? data[0].portfolio ?? data[0].nifty;
