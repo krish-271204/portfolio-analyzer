@@ -18,7 +18,6 @@ from .database import Base, engine
 import app.models
 import subprocess
 
-app = FastAPI()
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -60,27 +59,6 @@ def init_db():
             "status": "❌ Error running create_tables.py",
             "error": e.stderr
         }
-
-
-async def generate_portfolio_data(user_token: str, base_url: str = "http://localhost:8000"):
-    headers = {"Authorization": f"Bearer {user_token}"}
-    async with httpx.AsyncClient() as client:
-        analysis = (await client.get(f"{base_url}/portfolio/analysis", headers=headers)).json()
-        performance = (await client.get(f"{base_url}/portfolio/performance", headers=headers)).json()
-        composition = (await client.get(f"{base_url}/portfolio/composition", headers=headers)).json()
-    summary = (
-        f"Total investment: {analysis.get('total_investment', 0):.2f}, "
-        f"Current value: {analysis.get('total_current_value', 0):.2f}, "
-        f"Total profit/loss: {analysis.get('total_profit_loss', 0):.2f}, "
-        f"Realized profit: {analysis.get('realized_profit', 0):.2f}, "
-        f"Unrealized profit: {analysis.get('unrealized_profit', 0):.2f}. "
-        f"Top gainers: {', '.join([g['symbol'] for g in performance.get('top_gainers', [])])}. "
-        f"Top losers: {', '.join([l['symbol'] for l in performance.get('top_losers', [])])}. "
-        f"Sector allocation: {', '.join([f'{k}: {v['percentage']:.1f}%' for k, v in composition.get('sector_allocation', {}).items()])}. "
-        f"Market cap allocation: {', '.join([f'{k}: {v['percentage']:.1f}%' for k, v in composition.get('market_cap_allocation', {}).items()])}."
-    )
-    return summary
-
 async def get_order_history(user_token: str, base_url: str = "http://localhost:8000"):
     headers = {"Authorization": f"Bearer {user_token}"}
     async with httpx.AsyncClient(timeout=60.0) as client:
