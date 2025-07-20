@@ -50,33 +50,20 @@ const AnalysisPage = () => {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/');
-      return;
-    }
-    fetchAllAnalysisData();
-  }, []);
-
-  useEffect(() => {
+ useEffect(() => {
     const fetchAISummary = async () => {
       setAiLoading(true);
       setAiError("");
       try {
-        const token = localStorage.getItem("token"); // Adjust if you store token elsewhere
-        const res = await fetch("/api/ai/summary", {
-          method: "POST",
+        const token = localStorage.getItem("token");
+        const response = await axios.post("/api/ai/summary", {}, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
         });
-        if (!res.ok) {
-          throw new Error("Failed to fetch AI summary");
-        }
-        const data = await res.json();
-        setAiSummary(data.summary);
+        setAiSummary(response.data.summary);
       } catch (err) {
+        console.error("AI Summary Error:", err);
         setAiError("Could not load AI insights.");
       } finally {
         setAiLoading(false);
