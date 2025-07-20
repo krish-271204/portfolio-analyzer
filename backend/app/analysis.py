@@ -11,7 +11,6 @@ router = APIRouter()
 @router.get("/portfolio/analysis")
 def analyze_portfolio(db: Session = Depends(get_db), current_user=Depends(get_current_user)):
     orders = db.query(Order).filter(Order.user_id == current_user.id).order_by(Order.date).all()
-    print("ORDERS:", [dict(id=str(o.id), symbol=o.symbol, qty=o.quantity, price=o.price, type=o.type, date=o.date) for o in orders])
     if not orders:
         return {
             "total_investment": 0,
@@ -125,11 +124,6 @@ def analyze_portfolio(db: Session = Depends(get_db), current_user=Depends(get_cu
     # Add allocation_percent to each holding
     for h in holdings_list:
         h["allocation_percent"] = (h["current_value"] / total_current_value * 100) if total_current_value else 0
-
-    print("HOLDINGS (raw):", holdings)
-    print("HOLDINGS (list):", holdings_list)
-    print("REALIZED PROFIT:", realized_profit)
-    print("UNREALIZED PROFIT:", unrealized_profit)
 
     total_profit_loss = total_current_value + realized_profit - total_investment
 
