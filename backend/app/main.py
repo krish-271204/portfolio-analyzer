@@ -59,7 +59,7 @@ def init_db():
             "status": "❌ Error running create_tables.py",
             "error": e.stderr
         }
-async def get_order_history(user_token: str, base_url: str = "http://localhost:8000"):
+async def get_order_history(user_token: str, base_url: str = "https://portfolio-analyzer-9o19.onrender.com"):
     headers = {"Authorization": f"Bearer {user_token}"}
     async with httpx.AsyncClient(timeout=60.0) as client:
         analysis = (await client.get(f"{base_url}/portfolio/analysis", headers=headers)).json()
